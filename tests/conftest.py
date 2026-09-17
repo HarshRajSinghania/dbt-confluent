@@ -30,18 +30,13 @@ _FUNCTIONAL_ENV_VARS = (
 
 def pytest_collection_modifyitems(config, items):
     """Auto-mark tests from tests/unit and tests/functional so `-m` works."""
-    unit_marker = pytest.mark.unit
-    functional_marker = pytest.mark.functional
+    tests_dir = config.rootpath / "tests"
     for item in items:
-        path = str(item.fspath)
-        if f"{os.sep}tests{os.sep}unit{os.sep}" in path or path.endswith(
-            f"{os.sep}tests{os.sep}unit"
-        ):
-            item.add_marker(unit_marker)
-        elif f"{os.sep}tests{os.sep}functional{os.sep}" in path or path.endswith(
-            f"{os.sep}tests{os.sep}functional"
-        ):
-            item.add_marker(functional_marker)
+        top = item.path.relative_to(tests_dir).parts[0]
+        if top == "unit":
+            item.add_marker(pytest.mark.unit)
+        elif top == "functional":
+            item.add_marker(pytest.mark.functional)
 
 
 def _missing_functional_env_vars():
