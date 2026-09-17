@@ -104,10 +104,10 @@ def schema_yml(unique_schema):
         version: 2
         sources:
           - name: raw
-            schema: \"{unique_schema}\"
+            schema: "{unique_schema}"
             tables:
               - name: seed
-                identifier: \"{{{{ var('seed_name', 'base') }}}}\"
+                identifier: "{{{{ var('seed_name', 'base') }}}}"
     """)
 
 
